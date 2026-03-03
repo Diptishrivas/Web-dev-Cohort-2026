@@ -112,25 +112,92 @@
 
 
 
-function fetchData() {
+// function fetchData() {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve("Data received");
+//     }, 2000);
+//   });
+// }
+
+// async function getData() {
+//   console.log("Start");
+
+//   const result = await fetchData();
+
+//   console.log(result);
+//   console.log("End");
+// }
+
+// getData();
+
+
+
+
+
+// pending,done(fulfill),noko reject
+
+const promise = new Promise ((res,rej)=>{
+    setTimeout (()=>{
+       res("chaicode")
+    },2000)
+});
+console.log(promise);
+
+
+promise.then(console.log);
+// console.log
+
+
+const promise1= new Promise ((res,rej)=>{
+       setTimeout (()=>{
+        res("foo")
+       },300)
+})
+
+promise1.then((data)=>{
+  console.log(data)
+})
+
+console.log(promise1)
+
+const readFilePromise = (path) =>
+  new Promise((resolve, reject) => {
+    readFile(path, (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+
+readFilePromise("./data.txt")
+  .then((result) => console.log(result))
+  .catch((error) => console.error("Failed to read data"));
+
+
+
+/////////////////////////////////////////////////////////////////////
+
+
+function myAsyncFunction(url) {
   return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve("Data received");
-    }, 2000);
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+    xhr.onload = () => resolve(xhr.responseText);
+    xhr.onerror = () => reject(xhr.statusText);
+    xhr.send();
   });
 }
 
-async function getData() {
-  console.log("Start");
-
-  const result = await fetchData();
-
-  console.log(result);
-  console.log("End");
-}
-
-getData();
-
-
-
-
+//////////////////////////////////////////////////////
+const pendingResolved = new Promise((resolveOuter, rejectOuter) => {
+  resolveOuter(
+    new Promise((resolveInner) => {
+      setTimeout(() => {
+        resolveInner("inner");
+      }, 100);
+    }),
+  );
+});
